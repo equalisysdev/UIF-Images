@@ -1,6 +1,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <iostream>
 #include "Filereader.h"
 #include "Pixel.h"
 
@@ -46,26 +47,47 @@ void Filereader::parse_file(const char* filename, std::vector<Pixel>& pixels, in
 	{
 		throw std::runtime_error("Unable to open file.");
 	}
+	std::cout << "File opened" << std::endl;
 
 	// Prepares useful vars
-	char separationChars[] = { '\n', ' ', '\t' };
+	char separationChars[] = { '\n', ' ', '\t', '\r' };
 
 	// Start reading
 	// Ignore 2 Bytes magic number
-	ImgFile.seekg(2, std::ios::beg);
+	ImgFile.seekg(4, std::ios::beg);
 
 	// Gets the width
 	std::string widthStr = readUntilDelimiter(ImgFile, separationChars);
+
+	std::cout << "Width: " << widthStr << std::endl;
+
 	width = std::stoi(widthStr);
 
 	// Gets the height
 	std::string heightStr = readUntilDelimiter(ImgFile, separationChars);
-	height = std::stoi(widthStr);
+
+	std::cout << "Height: " << heightStr << std::endl;
+
+	height = std::stoi(heightStr);
+
+	ImgFile.seekg(1, std::ios::cur);
 
 	// reads Pixel data
-	int8_t r, g, b;
-	while (ImgFile >> r >> g >> b) { // Reads RGB values
-		pixels.emplace_back(r, g, b); // Adds a pixel to the Pixels vector
+
+	while (!ImgFile.eof()) { // Reads RGB values
+		std::string temp_r = readUntilDelimiter(ImgFile, separationChars);
+		std::string temp_g = readUntilDelimiter(ImgFile, separationChars);
+		std::string temp_b = readUntilDelimiter(ImgFile, separationChars);
+
+		uint8_t r = std::stoi(temp_r);
+		uint8_t g = std::stoi(temp_g);
+		uint8_t b = std::stoi(temp_b);
+
+		pixels.emplace_back(r, g, b);
+		// Adds a pixel to the Pixels vector and converts the strings to int8_t
+
+		std::cout << "Parsed pixel: (" << std::to_string(r) << ", "
+			<< std::to_string(g) << ", " << std::to_string(b) << ")" << std::endl;
 	}
 
 	ImgFile.close();

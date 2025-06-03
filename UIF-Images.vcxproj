@@ -102,10 +102,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)LZ4\include\lz4.h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(ProjectDir)LZ4\dll\liblz4.dll.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -123,12 +126,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Compressor.cpp" />
     <ClCompile Include="Encoder.cpp" />
     <ClCompile Include="Filereader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pixel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Compressor.h" />
     <ClInclude Include="Encoder.h" />
     <ClInclude Include="Filereader.h" />
     <ClInclude Include="Pixel.h" />

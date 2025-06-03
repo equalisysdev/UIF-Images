@@ -4,6 +4,7 @@
 
 #include "Filereader.h"
 #include "Encoder.h"
+#include "Compressor.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ int main(int argc, char** argv) {
 	// Prepares objects + vars
 	Filereader filereader = Filereader();
 	Encoder encoder = Encoder();
+	Compressor compressor = Compressor();
 
 	const char* pixmapPath = nullptr;
 	try
@@ -35,7 +37,8 @@ int main(int argc, char** argv) {
 		}
 
 		// If all checks passed, call encode()
-		encoder.encode(pixmapPath, filereader);
+		cout << "Using file: " << pixmapPath << endl << endl;
+		encoder.encode(pixmapPath, filereader, compressor);
 	}
 	catch (const exception& e)
 	{

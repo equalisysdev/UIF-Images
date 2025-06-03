@@ -1,10 +1,12 @@
 #pragma once
+#include <cstdint> // Ajout de l'en-tête pour int8_t
+
 class Pixel
 {
 public:
-	int8_t red;
-	int8_t green;
-	int8_t blue;
+	uint8_t red;
+	uint8_t green;
+	uint8_t blue;
 
-	Pixel(int8_t r, int8_t g, int8_t b) : red(r), green(g), blue(b) {}
+	Pixel(uint8_t r, uint8_t g, uint8_t b) : red(r), green(g), blue(b) {}
 };
