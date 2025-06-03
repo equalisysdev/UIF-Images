@@ -22,4 +22,12 @@ The header is super simple, is made of 8 bytes and only specifies the width/heig
 |  width  |  height |
 
 Before compression, the file is encoded in binary with **always** 3 Bytes per pixel (8 per channel, 
-which is an unsigned int). Since this rule is strictly enforced, we don't need separation between the values
+which is an unsigned int). Since this rule is strictly enforced, we don't need separation between the values.
+
+The extensions for the file type are `.uif` (Unoptimized Image Format) and `.cuif` (Compressed Unoptimized Image Format).
+
+## Compression
+
+The entier file is compressed with LZ4 algorithm, which is a fast compression algorithm.
+
+This program will store the file in both the compressed and uncompressed format.

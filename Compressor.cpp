@@ -8,6 +8,7 @@
 
 void Compressor::compress(std::string outputPath)
 {
+	std::cout << "Compressing file: " << outputPath << std::endl;
 	// Open the file for reading raw data
 	std::ifstream inputFile(outputPath, std::ios::binary | std::ios::ate);
 	if (!inputFile.is_open()) {
@@ -17,6 +18,7 @@ void Compressor::compress(std::string outputPath)
 	// Get the size of the file
 	std::streamsize inputSize = inputFile.tellg();
 	inputFile.seekg(0, std::ios::beg);
+	std::cout << "File size before compression: " << inputSize << " bytes" << std::endl;
 
 	// Read the file's raw data into a buffer
 	std::vector<char> inputBuffer(inputSize);
@@ -29,6 +31,8 @@ void Compressor::compress(std::string outputPath)
 	int maxCompressedSize = LZ4_compressBound(static_cast<int>(inputSize));
 	std::vector<char> compressedBuffer(maxCompressedSize);
 
+	std::cout << "Maximum compressed size: " << maxCompressedSize << " bytes" << std::endl << std::endl;
+	std::cout << "Compressing..." << std::endl << std::endl;
 	// Perform LZ4 compression
 	int compressedSize = LZ4_compress_default(
 		inputBuffer.data(),
@@ -37,16 +41,21 @@ void Compressor::compress(std::string outputPath)
 		maxCompressedSize
 	);
 
+	std::cout << "DONE." << std::endl;
+
+	std::cout << "Compressed size: " << compressedSize << " bytes" << std::endl;
+
 	if (compressedSize <= 0) {
 		throw std::runtime_error("Compression failed.");
 	}
 
 	// Write the compressed data to a new file
-	std::string compressedPath = std::filesystem::path(outputPath).replace_extension(".uif.lz4").string();
+	std::string compressedPath = std::filesystem::path(outputPath).replace_extension(".cuif").string();
 	std::ofstream compressedFile(compressedPath, std::ios::binary);
 	if (!compressedFile.is_open()) {
 		throw std::runtime_error("Failed to open compressed file for writing.");
 	}
+	std::cout << "Writing compressed data to: " << compressedPath << std::endl;
 
 	compressedFile.write(compressedBuffer.data(), compressedSize);
 	compressedFile.close();
