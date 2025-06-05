@@ -54,7 +54,7 @@ void Filereader::parse_file(const char* filename, std::vector<Pixel>& pixels, in
 
 	// Start reading
 	// Ignore 2 Bytes magic number
-	ImgFile.seekg(4, std::ios::beg);
+	ImgFile.seekg(3, std::ios::beg);
 
 	// Gets the width
 	std::string widthStr = readUntilDelimiter(ImgFile, separationChars);
@@ -70,24 +70,28 @@ void Filereader::parse_file(const char* filename, std::vector<Pixel>& pixels, in
 
 	height = std::stoi(heightStr);
 
-	ImgFile.seekg(1, std::ios::cur);
+	ImgFile.seekg(0, std::ios::cur);
 
 	// reads Pixel data
-
+	int i = 1;
 	while (!ImgFile.eof()) { // Reads RGB values
-		std::string temp_r = readUntilDelimiter(ImgFile, separationChars);
-		std::string temp_g = readUntilDelimiter(ImgFile, separationChars);
-		std::string temp_b = readUntilDelimiter(ImgFile, separationChars);
+		if (std::strchr(separationChars, ImgFile.peek()))
+		{
+			ImgFile.seekg(1, std::ios::cur); // Skip the separation char
+		}
+		else
+		{
+			std::string temp_r = readUntilDelimiter(ImgFile, separationChars);
+			std::string temp_g = readUntilDelimiter(ImgFile, separationChars);
+			std::string temp_b = readUntilDelimiter(ImgFile, separationChars);
 
-		uint8_t r = std::stoi(temp_r);
-		uint8_t g = std::stoi(temp_g);
-		uint8_t b = std::stoi(temp_b);
+			uint8_t r = std::stoi(temp_r);
+			uint8_t g = std::stoi(temp_g);
+			uint8_t b = std::stoi(temp_b);
 
-		pixels.emplace_back(r, g, b);
-		// Adds a pixel to the Pixels vector and converts the strings to int8_t
-
-		std::cout << "Parsed pixel: (" << std::to_string(r) << ", "
-			<< std::to_string(g) << ", " << std::to_string(b) << ")" << std::endl;
+			pixels.emplace_back(r, g, b);
+			// Adds a pixel to the Pixels vector and converts the strings to int8_t
+		}
 	}
 
 	ImgFile.close();

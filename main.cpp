@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include "CImg-3.5.6_pre06022513/CImg.h"
 
 #include "Filereader.h"
 #include "Encoder.h"

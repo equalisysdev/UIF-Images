@@ -26,7 +26,6 @@ void Encoder::encode(const char* pixmapPath, Filereader& filereader, Compressor&
 
 	std::cout << "\n<----- Encoding ----->\n" << std::endl;
 	// Creates a file
-
 	std::string outputPath = std::filesystem::path(pixmapPath).replace_extension(".uif").string();
 
 	std::fstream file(outputPath, std::ios::in | std::ios::out | std::ios::binary | std::ios::trunc);
@@ -49,15 +48,13 @@ void Encoder::encode(const char* pixmapPath, Filereader& filereader, Compressor&
 
 		std::string tmp_b = std::to_string(pixel.blue);
 		const char* b = tmp_b.c_str();
-
-		std::cout << "Wrote pixel: " << r << ", " << g << ", " << b << std::endl;
 	}
 
 	std::cout << "\nDONE.\n" << std::endl;
 	file.close();
 
 	std::cout << "<----- Compressing ----->" << std::endl;
-	compressor.compress(outputPath);
+	compressor.compress(outputPath, pixels, height, width);
 }
 
 Encoder::Encoder()
