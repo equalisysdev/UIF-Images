@@ -40,13 +40,14 @@ are reserved for the uncompressed header (necessary for decompression).
 This program will store the file in both the compressed and uncompressed format.
 
 > Note: I see a single byte is added after the header when compressing.
-> For example, a 3x3 image will have the following header:
-> `03 00 00 00 03 00 00 00 00`
-> `                        /\`
-> `                        ||`
-> `                  New Byte`
->
 > I don't know why this is happening, but I don't know how to fix it so you can say that it's a compression marker.
+> For example, a 3x3 image will have the following header:
+```
+03 00 00 00 03 00 00 00 | 00
+                          /\
+                          ||
+                    New Byte
+```
 
 ## Bug Report & Suggestions
 
